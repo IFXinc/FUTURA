@@ -1,4 +1,4 @@
-//import { stage00 } from "./stage00.js";
+//import { stage01 } from "./stage01.js";
 
 var stage00 = new Phaser.Scene("Introdução");
 
@@ -31,10 +31,12 @@ const audio = document.querySelector("audio");
 
 stage00.preload = function () {
 
-  this.load.spritesheet("map", "./code/assets/fundo-pagegame-fundo01.png", {
-    frameWidth: 1920,
-    frameHeight: 1080,
-  });
+  this.load.image("map", "./code/assets/fundo-pagegame-fundo01.png");
+  this.load.image("")
 };
+
+stage00.create = function () {
+  this.add.image(960, 540, 'map');
+}
  
 export { stage00 };

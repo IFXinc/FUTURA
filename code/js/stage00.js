@@ -32,11 +32,36 @@ const audio = document.querySelector("audio");
 stage00.preload = function () {
 
   this.load.image("map", "./code/assets/fundo-pagegame-fundo01.png");
-  this.load.image("")
+  this.load.image("pc", "./code/assets/object-pagegame-pc.png");
+  this.load.spritesheet("close", "./code/assets/button-pagegame-close.png", { frameWidth: 236, frameHeight: 43.1429});
+  this.load.spritesheet("dicas", "./code/assets/object-pagegame-dicas.png", { frameWidth: 202, frameHeight: 202}); 
+  this.load.image("entrada", "./code/assets/object-pagegame-entrada.png");
+  this.load.spritesheet("saida", "./code/assets/object-pagegame-saida.png", { frameWidth: 314, frameHeight: 93});
+  this.load.image("status01", "./code/assets/player1-pagegame-status.png");
+  this.load.image("status02", "./code/assets/player2-pagegame-status.png");
+  this.load.image("senha", "./code/assets/senha-pagegame-inserir.png");
+  this.load.image("confirmar", "./code/assets/subpage-pagegame-confirmar.png");
+  this.load.image("subpage", "./code/assets/subpage-pagegame-fundo.png");
+  this.load.image("dica01", "./code/assets/subpage-pagegame-fundo.png");
+  this.load.spritesheet("player01", "./code/assets/players.png",
+    { frameWidth: 100, frameHeight: 150});
+  this.load.spritesheet("player02", "./code/assets/players.png",
+    { frameWidth: 100, frameHeight: 150});
 };
 
 stage00.create = function () {
   this.add.image(960, 540, 'map');
+  this.add.image(2880, 540, 'map');
+  this.add.image(2880, 540, 'pc');
+  this.add.image(1434, 771, 'dicas');
+  this.add.image(1673, 445, 'dicas');
+  this.add.image(960, 1033.5, 'entrada');
+  this.add.image(2880, 1033.5, 'entrada');
+  this.add.image(960, 46.5, 'saida'); 
+  this.add.image(214.5, 94, 'status01');
+  this.add.image(2134.5, 94, 'status02');
+  this.add.image(1802, 21.5715, 'close');
+  this.add.image(3721, 21.5715, 'close');
 }
  
 export { stage00 };

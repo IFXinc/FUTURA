@@ -31,19 +31,19 @@ const audio = document.querySelector("audio");
 
 stage00.preload = function () {
 
-  this.load.image("map", "./code/assets/fundo-pagegame-fundo01.png");
-  this.load.image("pc", "./code/assets/object-pagegame-pc.png");
-  this.load.spritesheet("close", "./code/assets/button-pagegame-close.png", { frameWidth: 236, frameHeight: 43.1429});
-  this.load.spritesheet("dicas", "./code/assets/object-pagegame-dicas.png", { frameWidth: 202, frameHeight: 202}); 
-  this.load.image("entrada", "./code/assets/object-pagegame-entrada.png");
-  this.load.spritesheet("saida", "./code/assets/object-pagegame-saida.png", { frameWidth: 314, frameHeight: 93});
-  this.load.image("status01", "./code/assets/player1-pagegame-status.png");
-  this.load.image("status02", "./code/assets/player2-pagegame-status.png");
-  this.load.image("senha", "./code/assets/senha-pagegame-inserir.png");
-  this.load.image("confirmar", "./code/assets/subpage-pagegame-confirmar.png");
-  this.load.image("subpage", "./code/assets/subpage-pagegame-fundo.png");
-  this.load.image("dica01", "./code/assets/subpage-pagegame-fundo.png");
-  this.load.spritesheet("player01", "./code/assets/players.png",
+  this.load.image("map", "../assets/fundo-pagegame-fundo01.png");
+  this.load.image("pc", "..//assets/object-pagegame-pc.png");
+  this.load.spritesheet("close", "../assets/button-pagegame-close.png", { frameWidth: 236, frameHeight: 43.1429});
+  this.load.spritesheet("dicas", "../assets/object-pagegame-dicas.png", { frameWidth: 202, frameHeight: 202}); 
+  this.load.image("entrada", "../assets/object-pagegame-entrada.png");
+  this.load.spritesheet("saida", "../assets/object-pagegame-saida.png", { frameWidth: 314, frameHeight: 93});
+  this.load.image("status01", "../assets/player1-pagegame-status.png");
+  this.load.image("status02", "../assets/player2-pagegame-status.png");
+  this.load.image("senha", "../assets/senha-pagegame-inserir.png");
+  this.load.image("confirmar", "../assets/subpage-pagegame-confirmar.png");
+  this.load.image("subpage", "../assets/subpage-pagegame-fundo.png");
+  this.load.image("dica01", "../assets/subpage-pagegame-fundo.png");
+  this.load.spritesheet("player01", "../assets/players.png",
     { frameWidth: 100, frameHeight: 150});
   this.load.spritesheet("player02", "./code/assets/players.png",
     { frameWidth: 100, frameHeight: 150});

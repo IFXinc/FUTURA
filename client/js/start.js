@@ -1,22 +1,23 @@
-import { home } from "code/js/home.js";
+import { stage00 } from "./stage00.js";
 
-var start = new Phaser.Scene("start")
+var start = new Phaser.Scene("start");
 
 start.preload = function () {
-    this.load.image("fundo", "code/assets/fundo-pagestart.png")
-    this.load.image("buttonstartup", "code/assets/button-pagestart-start.png")
+  this.load.image("fundo", "./assets/start-fundo.png");
+  this.load.image("iniciar", "./assets/start-button-iniciar.png");
 };
 
 start.create = function () {
-    var button = this.add.image(240, 135, "buttonstartup", 0).setInteractive();
+  this.add.image(960, 540, "fundo");
+  var button = this.add.image(960, 767, "iniciar", 0).setInteractive();
 
-    button.on(
-        "pointerdown",
-        function () {
-            this.scene.start(home);
-        },
-        this
-    );
+  button.on(
+    "pointerdown",
+    function () {
+      this.scene.start(stage00);
+    },
+    this
+  );
 };
 
 start.update = function () {};

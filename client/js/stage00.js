@@ -70,6 +70,8 @@ stage00.preload = function () {
 
 stage00.create = function () {
 
+  this.socket = io();
+
   this.add.image(960, 540, "map");
   this.add.image(2880, 540, "map");
   player1 = this.physics.add.sprite(960, 771, "player1");
@@ -196,6 +198,258 @@ stage00.create = function () {
 
   cursors = this.input.keyboard.createCursorKeys();
 
+  // Disparar evento quando jogador entrar na partida
+  var self = this;
+  var physics = this.physics;
+  var cameras = this.cameras;
+  var time = this.time;
+  var socket = this.socket;
+
+  this.socket.on("jogadores", function (jogadores) {
+    if (jogadores.primeiro === self.socket.id) {
+      // Define jogador como o primeiro
+      jogador = 1;
+
+      // Personagens colidem com os limites da cena
+      player1.setCollideWorldBounds(true);
+
+      // Detecção de colisão: terreno
+      physics.add.collider(player1, terreno, hitCave, null, this);
+
+      // Detecção de colisão e disparo de evento: ARCas
+      physics.add.collider(player1, ARCas, hitARCa, null, this);
+
+      // Câmera seguindo o personagem 1
+      cameras.main.startFollow(player1);
+
+      // D-pad: para cada direção já os eventos
+      // para tocar a tela ("pointerover")
+      // e ao terminar essa interação ("pointerout")
+      esquerda.on("pointerover", () => {
+        if (timer > 0) {
+          esquerda.setFrame(1);
+          player1.setVelocityX(-160);
+          player1.anims.play("left1", true);
+        }
+      });
+      esquerda.on("pointerout", () => {
+        if (timer > 0) {
+          esquerda.setFrame(0);
+          player1.setVelocityX(0);
+          player1.anims.play("stopped1", true);
+        }
+      });
+      direita.on("pointerover", () => {
+        if (timer > 0) {
+          direita.setFrame(1);
+          player1.setVelocityX(160);
+          player1.anims.play("right1", true);
+        }
+      });
+      direita.on("pointerout", () => {
+        if (timer > 0) {
+          direita.setFrame(0);
+          player1.setVelocityX(0);
+          player1.anims.play("stopped1", true);
+        }
+      });
+      cima.on("pointerover", () => {
+        if (timer > 0) {
+          cima.setFrame(1);
+          player1.setVelocityY(-160);
+          player1.anims.play("right1", true);
+        }
+      });
+      cima.on("pointerout", () => {
+        if (timer > 0) {
+          cima.setFrame(0);
+          player1.setVelocityY(0);
+          player1.anims.play("stopped1", true);
+        }
+      });
+      baixo.on("pointerover", () => {
+        if (timer > 0) {
+          baixo.setFrame(1);
+          player1.setVelocityY(160);
+          player1.anims.play("right1", true);
+        }
+      });
+      baixo.on("pointerout", () => {
+        if (timer > 0) {
+          baixo.setFrame(0);
+          player1.setVelocityY(0);
+          player1.anims.play("stopped1", true);
+        }
+      });
+
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+        })
+        .catch((error) => console.log(error));
+    } else if (jogadores.segundo === self.socket.id) {
+      // Define jogador como o segundo
+      jogador = 2;
+
+      // Personagens colidem com os limites da cena
+      player2.setCollideWorldBounds(true);
+
+      // Detecção de colisão: terreno
+      physics.add.collider(player2, terreno, hitCave, null, this);
+
+      // Detecção de colisão e disparo de evento: ARCas
+      physics.add.collider(player2, ARCas, hitARCa, null, this);
+
+      // Câmera seguindo o personagem 2
+      cameras.main.startFollow(player2);
+
+      // D-pad: para cada direção já os eventos
+      // para tocar a tela ("pointerover")
+      // e ao terminar essa interação ("pointerout")
+      esquerda.on("pointerover", () => {
+        if (timer > 0) {
+          esquerda.setFrame(1);
+          player2.setVelocityX(-160);
+          player2.anims.play("left2", true);
+        }
+      });
+      esquerda.on("pointerout", () => {
+        if (timer > 0) {
+          esquerda.setFrame(0);
+          player2.setVelocityX(0);
+          player2.anims.play("stopped2", true);
+        }
+      });
+      direita.on("pointerover", () => {
+        if (timer > 0) {
+          direita.setFrame(1);
+          player2.setVelocityX(160);
+          player2.anims.play("right2", true);
+        }
+      });
+      direita.on("pointerout", () => {
+        if (timer > 0) {
+          direita.setFrame(0);
+          player2.setVelocityX(0);
+          player2.anims.play("stopped2", true);
+        }
+      });
+      cima.on("pointerover", () => {
+        if (timer > 0) {
+          cima.setFrame(1);
+          player2.setVelocityY(-160);
+          player2.anims.play("right2", true);
+        }
+      });
+      cima.on("pointerout", () => {
+        if (timer > 0) {
+          cima.setFrame(0);
+          player2.setVelocityY(0);
+          player2.anims.play("stopped2", true);
+        }
+      });
+      baixo.on("pointerover", () => {
+        if (timer > 0) {
+          baixo.setFrame(1);
+          player2.setVelocityY(160);
+          player2.anims.play("right2", true);
+        }
+      });
+      baixo.on("pointerout", () => {
+        if (timer > 0) {
+          baixo.setFrame(0);
+          player2.setVelocityY(0);
+          player2.anims.play("stopped2", true);
+        }
+      });
+
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+          localConnection = new RTCPeerConnection(ice_servers);
+          midias
+            .getTracks()
+            .forEach((track) => localConnection.addTrack(track, midias));
+          localConnection.onicecandidate = ({ candidate }) => {
+            candidate &&
+              socket.emit("candidate", jogadores.primeiro, candidate);
+          };
+          console.log(midias);
+          localConnection.ontrack = ({ streams: [midias] }) => {
+            audio.srcObject = midias;
+          };
+          localConnection
+            .createOffer()
+            .then((offer) => localConnection.setLocalDescription(offer))
+            .then(() => {
+              socket.emit(
+                "offer",
+                jogadores.primeiro,
+                localConnection.localDescription
+              );
+            });
+        })
+        .catch((error) => console.log(error));
+    }
+
+    // Os dois jogadores estão conectados
+    console.log(jogadores);
+    if (jogadores.primeiro !== undefined && jogadores.segundo !== undefined) {
+      // Contagem regressiva em segundos (1.000 milissegundos)
+      timer = 60;
+      timedEvent = time.addEvent({
+        delay: 1000,
+        callback: countdown,
+        callbackScope: this,
+        loop: true,
+      });
+    }
+  });
+
+  this.socket.on("offer", (socketId, description) => {
+    remoteConnection = new RTCPeerConnection(ice_servers);
+    midias
+      .getTracks()
+      .forEach((track) => remoteConnection.addTrack(track, midias));
+    remoteConnection.onicecandidate = ({ candidate }) => {
+      candidate && socket.emit("candidate", socketId, candidate);
+    };
+    remoteConnection.ontrack = ({ streams: [midias] }) => {
+      audio.srcObject = midias;
+    };
+    remoteConnection
+      .setRemoteDescription(description)
+      .then(() => remoteConnection.createAnswer())
+      .then((answer) => remoteConnection.setLocalDescription(answer))
+      .then(() => {
+        socket.emit("answer", socketId, remoteConnection.localDescription);
+      });
+  });
+
+  socket.on("answer", (description) => {
+    localConnection.setRemoteDescription(description);
+  });
+
+  socket.on("candidate", (candidate) => {
+    const conn = localConnection || remoteConnection;
+    conn.addIceCandidate(new RTCIceCandidate(candidate));
+  });
+
+  // Desenhar o outro jogador
+  this.socket.on("desenharOutroJogador", ({ frame, x, y }) => {
+    if (jogador === 1) {
+      player2.setFrame(frame);
+      player2.x = x;
+      player2.y = y;
+    } else if (jogador === 2) {
+      player1.setFrame(frame);
+      player1.x = x;
+      player1.y = y;
+    }
+  });
+}
 };
 
 stage00.update = function (time, delta) {

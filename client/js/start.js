@@ -15,6 +15,15 @@ start.create = function () {
   this.add.image(236.858 + 256, 5.3804, "close");
 
   var button = this.add.image(128, 100, "iniciar", 0).setInteractive();
+
+  button.on(
+    "pointerdown",
+    function () {
+      this.scene.start(stage00);
+    },
+    this
+  );
+
   var button = this.add.image(128+256, 100, "iniciar", 0).setInteractive();
 
   button.on(

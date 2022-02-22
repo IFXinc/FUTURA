@@ -5,6 +5,7 @@ var stage00 = new Phaser.Scene("Introdução");
 var ARCas;
 var cursors;
 var dica;
+var divisao
 var ice_servers = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 var jogador;
 var life;
@@ -31,6 +32,7 @@ var voz;
 const audio = document.querySelector("audio");
 
 stage00.preload = function () {
+  this.load.image("divisao", "./assets/division.png");
   this.load.image("confirmar", "./assets/subpage-pagegame-confirmar.png");
   this.load.image("dica01", "./assets/subpage-pagegame-fundo.png");
   this.load.image("entrada", "./assets/object-pagegame-entrada.png");
@@ -58,7 +60,7 @@ stage00.preload = function () {
     frameHeight: 16,
   });
 
-  this.load.spritesheet("close", "./assets/button-pagegame-close.png", {
+  this.load.spritesheet("closestage", "./assets/button-pagegame-close.png", {
     frameWidth: 32.2826,
     frameHeight: 10.7609,
   });
@@ -69,8 +71,8 @@ stage00.create = function () {
 
   this.add.image(128, 72, "map");
   this.add.image(384, 72, "map");
-  player1 = this.physics.add.sprite(128, 771, "player1");
-  player2 = this.physics.add.sprite(384, 771, "player2");
+  player1 = this.physics.add.sprite(128, 126, "player1");
+  player2 = this.physics.add.sprite(384, 126, "player2");
   this.add.image(384, 72, "pc");
   this.add.image(128, 4.3261, "saida");
   this.add.image(384, 4.3261, "saida", 2);
@@ -78,12 +80,16 @@ stage00.create = function () {
   this.add.image(384, 139.6739, "entrada");
   this.add.image(28.5, 12.4895, "status01");
   this.add.image(28.5+256, 12.4895, "status02");
-  this.add.image(236.8587, 5.3804, "close");
-  this.add.image(492.8587, 5.3804, "close");
+  this.add.image(236.8587, 5.3804, "closestage");
+  this.add.image(492.8587, 5.3804, "closestage");
+  
+  divisao = this.physics.add.sprite(256, 72, "divisao");
+  divisao.body.immovable = true;
+  divisao.visible = false;
+  this.physics.add.collider(player1, divisao, null, null, this);
 
   dica = this.physics.add.staticGroup();
-
-  dica.create(1434, 771, "dicas");
+  dica.create(178, 98, "dicas");
 
   pagedica = this.physics.add.sprite(128, 72, "pagedica");
   pagedica.disableBody(false, true);
@@ -257,16 +263,16 @@ stage00.create = function () {
 
 stage00.update = function (time, delta) {
   if (cursors.left.isDown) {
-    player1.body.setVelocityX(-500);
+    player1.body.setVelocityX(-100);
   } else if (cursors.right.isDown) {
-    player1.body.setVelocityX(500);
+    player1.body.setVelocityX(100);
   } else {
     player1.body.setVelocityX(0);
   }
   if (cursors.up.isDown) {
-    player1.body.setVelocityY(-500);
+    player1.body.setVelocityY(-100);
   } else if (cursors.down.isDown) {
-    player1.body.setVelocityY(500);
+    player1.body.setVelocityY(100);
   } else {
     player1.body.setVelocityY(0);
   }

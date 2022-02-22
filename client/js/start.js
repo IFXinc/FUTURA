@@ -5,11 +5,17 @@ var start = new Phaser.Scene("start");
 start.preload = function () {
   this.load.image("fundo", "./assets/start-fundo.png");
   this.load.image("iniciar", "./assets/start-button-iniciar.png");
+  this.load.image("close", "./assets/start-button-close.png");
 };
 
 start.create = function () {
-  this.add.image(960, 540, "fundo");
-  var button = this.add.image(960, 767, "iniciar", 0).setInteractive();
+  this.add.image(128, 72, "fundo");
+  this.add.image(236.858, 5.3804, "close");
+  this.add.image(128 + 256, 72, "fundo");
+  this.add.image(236.858 + 256, 5.3804, "close");
+
+  var button = this.add.image(128, 100, "iniciar", 0).setInteractive();
+  var button = this.add.image(128+256, 100, "iniciar", 0).setInteractive();
 
   button.on(
     "pointerdown",

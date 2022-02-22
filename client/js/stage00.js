@@ -41,56 +41,51 @@ stage00.preload = function () {
   this.load.image("status01", "./assets/player1-pagegame-status.png");
   this.load.image("status02", "./assets/player2-pagegame-status.png");
   this.load.image("subpage", "./assets/subpage-pagegame-fundo.png");
-
-  this.load.spritesheet("dicas", "./assets/object-pagegame-dicas.png", {
-    frameWidth: 202,
-    frameHeight: 202,
-  });
+  this.load.image("dicas", "./assets/object-pagegame-dicas.png");
 
   this.load.spritesheet("saida", "./assets/object-pagegame-saida.png", {
-    frameWidth: 314,
-    frameHeight: 93,
+    frameWidth: 36.247,
+    frameHeight: 8.6522,
   });
 
   this.load.spritesheet("player1", "./assets/player1.png", {
-    frameWidth: 100,
-    frameHeight: 150,
+    frameWidth: 16,
+    frameHeight: 16,
   });
 
   this.load.spritesheet("player2", "./assets/player2.png", {
-    frameWidth: 100,
-    frameHeight: 150,
+    frameWidth: 16,
+    frameHeight: 16,
   });
 
   this.load.spritesheet("close", "./assets/button-pagegame-close.png", {
-    frameWidth: 236,
-    frameHeight: 43.1429,
+    frameWidth: 32.2826,
+    frameHeight: 10.7609,
   });
 };
 
 stage00.create = function () {
-
   this.socket = io();
 
-  this.add.image(960, 540, "map");
-  this.add.image(2880, 540, "map");
-  player1 = this.physics.add.sprite(960, 771, "player1");
-  player2 = this.physics.add.sprite(2880, 771, "player2");
-  this.add.image(2880, 540, "pc");
-  this.add.image(960, 46.5, "saida");
-  this.add.image(2880, 46.5, "saida", 2);
-  this.add.image(960, 1033.5, "entrada");
-  this.add.image(2880, 1033.5, "entrada");
-  this.add.image(214.5, 94, "status01");
-  this.add.image(2134.5, 94, "status02");
-  this.add.image(1802, 21.5715, "close");
-  this.add.image(3721, 21.5715, "close");
+  this.add.image(128, 72, "map");
+  this.add.image(384, 72, "map");
+  player1 = this.physics.add.sprite(128, 771, "player1");
+  player2 = this.physics.add.sprite(384, 771, "player2");
+  this.add.image(384, 72, "pc");
+  this.add.image(128, 4.3261, "saida");
+  this.add.image(384, 4.3261, "saida", 2);
+  this.add.image(128, 139.6739, "entrada");
+  this.add.image(384, 139.6739, "entrada");
+  this.add.image(28.5, 12.4895, "status01");
+  this.add.image(28.5+256, 12.4895, "status02");
+  this.add.image(236.8587, 5.3804, "close");
+  this.add.image(492.8587, 5.3804, "close");
 
   dica = this.physics.add.staticGroup();
 
   dica.create(1434, 771, "dicas");
 
-  pagedica = this.physics.add.sprite(960, 540, "pagedica");
+  pagedica = this.physics.add.sprite(128, 72, "pagedica");
   pagedica.disableBody(false, true);
 
   this.physics.add.collider(player1, dica, hitdica1, null, this);
@@ -216,7 +211,6 @@ stage00.create = function () {
 
       // Detecção de colisão e disparo de evento: ARCas
       // physics.add.collider(player1, ARCas, hitARCa, null, this);
-
     } else if (jogadores.segundo === self.socket.id) {
       // Define jogador como o segundo
       jogador = 2;
@@ -235,7 +229,7 @@ stage00.create = function () {
     }
 
     // Os dois jogadores estão conectados
-    console.log(jogadores)
+    console.log(jogadores);
     if (jogadores.primeiro !== undefined && jogadores.segundo !== undefined) {
       // Contagem regressiva em segundos (1.000 milissegundos)
       timer = 60;
@@ -291,7 +285,7 @@ stage00.update = function (time, delta) {
 };
 
 function hitdica1(player1, dicas) {
-  pagedica.enableBody(true, 960, 540, true, true);
+  pagedica.enableBody(true, 128, 72, true, true);
 }
 
 export { stage00 };

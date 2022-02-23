@@ -5,7 +5,7 @@ var stage00 = new Phaser.Scene("Introdução");
 var ARCas;
 var cursors;
 var dica;
-var divisao
+var divisao;
 var ice_servers = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 var jogador;
 var life;
@@ -23,8 +23,6 @@ var texto;
 var tileset0;
 var tileset1;
 var timedEvent;
-var timer = -1;
-var timerText;
 var touchX;
 var touchY;
 var trilha;
@@ -67,8 +65,6 @@ stage00.preload = function () {
 };
 
 stage00.create = function () {
-  this.socket = io();
-
   this.add.image(128, 72, "map");
   this.add.image(384, 72, "map");
   player1 = this.physics.add.sprite(128, 126, "player1");
@@ -79,10 +75,10 @@ stage00.create = function () {
   this.add.image(128, 139.6739, "entrada");
   this.add.image(384, 139.6739, "entrada");
   this.add.image(28.5, 12.4895, "status01");
-  this.add.image(28.5+256, 12.4895, "status02");
+  this.add.image(28.5 + 256, 12.4895, "status02");
   this.add.image(236.8587, 5.3804, "closestage");
   this.add.image(492.8587, 5.3804, "closestage");
-  
+
   divisao = this.physics.add.sprite(256, 72, "divisao");
   divisao.body.immovable = true;
   divisao.visible = false;
@@ -199,11 +195,12 @@ stage00.create = function () {
 
   cursors = this.input.keyboard.createCursorKeys();
 
-  // Disparar evento quando jogador entrar na partida
+  this.socket = io();
   var self = this;
   var physics = this.physics;
-  var time = this.time;
+  var socket = this.socket;
 
+  // Disparar evento quando jogador entrar na partida
   this.socket.on("jogadores", function (jogadores) {
     if (jogadores.primeiro === self.socket.id) {
       // Define jogador como o primeiro
@@ -212,11 +209,13 @@ stage00.create = function () {
       // Personagens colidem com os limites da cena
       player1.setCollideWorldBounds(true);
 
-      // Detecção de colisão: terreno
-      // physics.add.collider(player1, terreno, hitCave, null, this);
-
-      // Detecção de colisão e disparo de evento: ARCas
-      // physics.add.collider(player1, ARCas, hitARCa, null, this);
+      // Captura o microfone
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+        })
+        .catch((error) => console.log(error));
     } else if (jogadores.segundo === self.socket.id) {
       // Define jogador como o segundo
       jogador = 2;
@@ -224,27 +223,68 @@ stage00.create = function () {
       // Personagens colidem com os limites da cena
       player2.setCollideWorldBounds(true);
 
-      // Detecção de colisão: terreno
-      // physics.add.collider(player2, terreno, hitCave, null, this);
-
-      // Detecção de colisão e disparo de evento: ARCas
-      // physics.add.collider(player2, ARCas, hitARCa, null, this);
-
-      // Câmera seguindo o personagem 2
-      // cameras.main.startFollow(player2);
+      // Captura o microfone e convida a outra parte para trocar áudio
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          midias = stream;
+          localConnection = new RTCPeerConnection(ice_servers);
+          midias
+            .getTracks()
+            .forEach((track) => localConnection.addTrack(track, midias));
+          localConnection.onicecandidate = ({ candidate }) => {
+            candidate &&
+              socket.emit("candidate", jogadores.primeiro, candidate);
+          };
+          console.log(midias);
+          localConnection.ontrack = ({ streams: [midias] }) => {
+            audio.srcObject = midias;
+          };
+          localConnection
+            .createOffer()
+            .then((offer) => localConnection.setLocalDescription(offer))
+            .then(() => {
+              socket.emit(
+                "offer",
+                jogadores.primeiro,
+                localConnection.localDescription
+              );
+            });
+        })
+        .catch((error) => console.log(error));
     }
 
     // Os dois jogadores estão conectados
     console.log(jogadores);
-    if (jogadores.primeiro !== undefined && jogadores.segundo !== undefined) {
-      // Contagem regressiva em segundos (1.000 milissegundos)
-      timer = 60;
-      timedEvent = time.addEvent({
-        delay: 1000,
-        callbackScope: this,
-        loop: true,
+  });
+
+  this.socket.on("offer", (socketId, description) => {
+    remoteConnection = new RTCPeerConnection(ice_servers);
+    midias
+      .getTracks()
+      .forEach((track) => remoteConnection.addTrack(track, midias));
+    remoteConnection.onicecandidate = ({ candidate }) => {
+      candidate && socket.emit("candidate", socketId, candidate);
+    };
+    remoteConnection.ontrack = ({ streams: [midias] }) => {
+      audio.srcObject = midias;
+    };
+    remoteConnection
+      .setRemoteDescription(description)
+      .then(() => remoteConnection.createAnswer())
+      .then((answer) => remoteConnection.setLocalDescription(answer))
+      .then(() => {
+        socket.emit("answer", socketId, remoteConnection.localDescription);
       });
-    }
+  });
+
+  this.socket.on("answer", (description) => {
+    localConnection.setRemoteDescription(description);
+  });
+
+  this.socket.on("candidate", (candidate) => {
+    const conn = localConnection || remoteConnection;
+    conn.addIceCandidate(new RTCIceCandidate(candidate));
   });
 
   // Desenhar o outro jogador
@@ -261,32 +301,47 @@ stage00.create = function () {
   });
 };
 
-stage00.update = function (time, delta) {
-  if (cursors.left.isDown) {
-    player1.body.setVelocityX(-100);
-  } else if (cursors.right.isDown) {
-    player1.body.setVelocityX(100);
-  } else {
-    player1.body.setVelocityX(0);
-  }
-  if (cursors.up.isDown) {
-    player1.body.setVelocityY(-100);
-  } else if (cursors.down.isDown) {
-    player1.body.setVelocityY(100);
-  } else {
-    player1.body.setVelocityY(0);
-  }
-  // Animação player1
-  if (cursors.left.isDown) {
-    player1.anims.play("left1", true);
-  } else if (cursors.right.isDown) {
-    player1.anims.play("right1", true);
-  } else if (cursors.up.isDown) {
-    player1.anims.play("up1", true);
-  } else if (cursors.down.isDown) {
-    player1.anims.play("down1", true);
-  } else {
-    player1.anims.play("stopped1", true);
+stage00.update = function () {
+  if (jogador === 1) {
+    if (cursors.left.isDown) {
+      player1.body.setVelocityX(-100);
+    } else if (cursors.right.isDown) {
+      player1.body.setVelocityX(100);
+    } else {
+      player1.body.setVelocityX(0);
+    }
+    if (cursors.up.isDown) {
+      player1.body.setVelocityY(-100);
+    } else if (cursors.down.isDown) {
+      player1.body.setVelocityY(100);
+    } else {
+      player1.body.setVelocityY(0);
+    }
+    this.socket.emit("estadoDoJogador", {
+      frame: player1.anims.getFrameName(),
+      x: player1.body.x + 8,
+      y: player1.body.y + 8,
+    });
+  } else if (jogador === 2) {
+    if (cursors.left.isDown) {
+      player2.body.setVelocityX(-100);
+    } else if (cursors.right.isDown) {
+      player2.body.setVelocityX(100);
+    } else {
+      player2.body.setVelocityX(0);
+    }
+    if (cursors.up.isDown) {
+      player2.body.setVelocityY(-100);
+    } else if (cursors.down.isDown) {
+      player2.body.setVelocityY(100);
+    } else {
+      player2.body.setVelocityY(0);
+    }
+    this.socket.emit("estadoDoJogador", {
+      frame: player2.anims.getFrameName(),
+      x: player2.body.x + 8,
+      y: player2.body.y + 8,
+    });
   }
 };
 

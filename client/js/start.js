@@ -24,7 +24,7 @@ start.create = function () {
     this
   );
 
-  var button = this.add.image(128+256, 100, "iniciar", 0).setInteractive();
+  var button = this.add.image(128 + 256, 100, "iniciar", 0).setInteractive();
 
   button.on(
     "pointerdown",

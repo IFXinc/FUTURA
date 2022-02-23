@@ -32,63 +32,59 @@ const audio = document.querySelector("audio");
 stage00.preload = function () {
   this.load.image("divisao", "./assets/division.png");
   this.load.image("confirmar", "./assets/subpage-pagegame-confirmar.png");
-  this.load.image("dica01", "./assets/subpage-pagegame-fundo.png");
+  this.load.image("dica01", "./assets/object-pagegame-dicas.png");
   this.load.image("entrada", "./assets/object-pagegame-entrada.png");
   this.load.image("map", "./assets/fundo-pagegame-fundo01.png");
   this.load.image("pagedica", "./assets/subpage-pagegame-fundo.png");
   this.load.image("pc", "./assets/object-pagegame-pc.png");
-  this.load.image("senha", "./assets/senha-pagegame-inserir.png");
   this.load.image("status01", "./assets/player1-pagegame-status.png");
   this.load.image("status02", "./assets/player2-pagegame-status.png");
-  this.load.image("subpage", "./assets/subpage-pagegame-fundo.png");
-  this.load.image("dicas", "./assets/object-pagegame-dicas.png");
 
   this.load.spritesheet("saida", "./assets/object-pagegame-saida.png", {
-    frameWidth: 36.247,
-    frameHeight: 8.6522,
+    frameWidth: 271.8523,
+    frameHeight: 64.8913,
   });
 
   this.load.spritesheet("player1", "./assets/player1.png", {
-    frameWidth: 16,
-    frameHeight: 16,
+    frameWidth: 120,
+    frameHeight: 120,
   });
 
   this.load.spritesheet("player2", "./assets/player2.png", {
-    frameWidth: 16,
-    frameHeight: 16,
+    frameWidth: 120,
+    frameHeight: 120,
   });
 
   this.load.spritesheet("closestage", "./assets/button-pagegame-close.png", {
-    frameWidth: 32.2826,
-    frameHeight: 10.7609,
+    frameWidth: 242.1196,
+    frameHeight: 80.7065,
   });
 };
 
 stage00.create = function () {
-  this.add.image(128, 72, "map");
-  this.add.image(384, 72, "map");
-  player1 = this.physics.add.sprite(128, 126, "player1");
-  player2 = this.physics.add.sprite(384, 126, "player2");
-  this.add.image(384, 72, "pc");
-  this.add.image(128, 4.3261, "saida");
-  this.add.image(384, 4.3261, "saida", 2);
-  this.add.image(128, 139.6739, "entrada");
-  this.add.image(384, 139.6739, "entrada");
-  this.add.image(28.5, 12.4895, "status01");
-  this.add.image(28.5 + 256, 12.4895, "status02");
-  this.add.image(236.8587, 5.3804, "closestage");
-  this.add.image(492.8587, 5.3804, "closestage");
-
-  divisao = this.physics.add.sprite(256, 72, "divisao");
-  divisao.body.immovable = true;
-  divisao.visible = false;
-  this.physics.add.collider(player1, divisao, null, null, this);
+  this.add.image(960, 540, "map");
+  this.add.image(2880, 540, "map");
+  player1 = this.physics.add.sprite(960, 945, "player1");
+  player2 = this.physics.add.sprite(2880, 945, "player2");
+  this.add.image(2880, 540, "pc");
+  this.add.image(960, 32.4457, "saida");
+  this.add.image(2880, 32.4457, "saida", 2);
+  this.add.image(960, 1047.5543, "entrada");
+  this.add.image(2880, 1047.5543, "entrada");
+  this.add.image(213.75, 93.6713, "status01");
+  this.add.image(213.75 + 1920, 93.6713, "status02");
+  this.add.image(1770, 40.3533, "closestage");
+  this.add.image(1770+1920, 40.3533, "closestage");
 
   dica = this.physics.add.staticGroup();
-  dica.create(178, 98, "dicas");
+  dica.create(1350, 730, "dica01");
 
-  pagedica = this.physics.add.sprite(128, 72, "pagedica");
-  pagedica.disableBody(false, true);
+  divisao = this.physics.add.sprite(1920, 540, "divisao");
+  divisao.body.immovable = true;
+  divisao.visible = false;
+
+  pagedica = this.physics.add.sprite(960, 540, "pagedica");
+  pagedica.disableBody(false, true,);
 
   this.physics.add.collider(player1, dica, hitdica1, null, this);
 
@@ -208,6 +204,7 @@ stage00.create = function () {
 
       // Personagens colidem com os limites da cena
       player1.setCollideWorldBounds(true);
+      physics.add.collider(player1, divisao, null, null, this);
 
       // Captura o microfone
       navigator.mediaDevices
@@ -222,6 +219,7 @@ stage00.create = function () {
 
       // Personagens colidem com os limites da cena
       player2.setCollideWorldBounds(true);
+      physics.add.collider(player2, divisao, null, null, this);
 
       // Captura o microfone e convida a outra parte para trocar áudio
       navigator.mediaDevices
@@ -304,16 +302,16 @@ stage00.create = function () {
 stage00.update = function () {
   if (jogador === 1) {
     if (cursors.left.isDown) {
-      player1.body.setVelocityX(-100);
+      player1.body.setVelocityX(-500);
     } else if (cursors.right.isDown) {
-      player1.body.setVelocityX(100);
+      player1.body.setVelocityX(500);
     } else {
       player1.body.setVelocityX(0);
     }
     if (cursors.up.isDown) {
-      player1.body.setVelocityY(-100);
+      player1.body.setVelocityY(-500);
     } else if (cursors.down.isDown) {
-      player1.body.setVelocityY(100);
+      player1.body.setVelocityY(500);
     } else {
       player1.body.setVelocityY(0);
     }
@@ -324,16 +322,16 @@ stage00.update = function () {
     });
   } else if (jogador === 2) {
     if (cursors.left.isDown) {
-      player2.body.setVelocityX(-100);
+      player2.body.setVelocityX(-500);
     } else if (cursors.right.isDown) {
-      player2.body.setVelocityX(100);
+      player2.body.setVelocityX(500);
     } else {
       player2.body.setVelocityX(0);
     }
     if (cursors.up.isDown) {
-      player2.body.setVelocityY(-100);
+      player2.body.setVelocityY(-500);
     } else if (cursors.down.isDown) {
-      player2.body.setVelocityY(100);
+      player2.body.setVelocityY(500);
     } else {
       player2.body.setVelocityY(0);
     }
@@ -346,7 +344,7 @@ stage00.update = function () {
 };
 
 function hitdica1(player1, dicas) {
-  pagedica.enableBody(true, 128, 72, true, true);
+  pagedica.enableBody(true, 960, 540, true, true);
 }
 
 export { stage00 };

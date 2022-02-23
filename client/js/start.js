@@ -9,12 +9,12 @@ start.preload = function () {
 };
 
 start.create = function () {
-  this.add.image(128, 72, "fundo");
-  this.add.image(236.858, 5.3804, "close");
-  this.add.image(128 + 256, 72, "fundo");
-  this.add.image(236.858 + 256, 5.3804, "close");
+  this.add.image(960, 540, "fundo");
+  this.add.image(1770, 40.3533, "close");
+  this.add.image(960 + 1920, 540, "fundo");
+  this.add.image(1770 + 1920, 40.3533, "close");
 
-  var button = this.add.image(128, 100, "iniciar", 0).setInteractive();
+  var button = this.add.image(960, 750, "iniciar", 0).setInteractive();
 
   button.on(
     "pointerdown",
@@ -24,7 +24,7 @@ start.create = function () {
     this
   );
 
-  var button = this.add.image(128 + 256, 100, "iniciar", 0).setInteractive();
+  var button = this.add.image(960 + 1920, 750, "iniciar", 0).setInteractive();
 
   button.on(
     "pointerdown",

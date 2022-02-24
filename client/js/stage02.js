@@ -1,7 +1,7 @@
-import { stage01 } from "./stage01.js";
+import { win } from "./win.js";
 import { gameover } from "./gameover.js";
 
-var stage00 = new Phaser.Scene("stage00");
+var stage02 = new Phaser.Scene("stage02");
 
 var ARCas;
 var cursors;
@@ -40,44 +40,44 @@ var trilha;
 var voz;
 const audio = document.querySelector("audio");
 
-stage00.preload = function () {
-  this.load.image("divisao", "./assets/stage00/division.png");
-  this.load.image("dica", "./assets/stage00/object-pagegame-dicas.png");
-  this.load.image("entrada", "./assets/stage00/object-pagegame-entrada.png");
-  this.load.image("map", "./assets/stage00/fundo-pagegame-fundo01.png");
-  this.load.image("pagedica01", "./assets/stage00/subpage-pagegame-dica01.png");
-  this.load.image("pagedica02", "./assets/stage00/subpage-pagegame-dica02.png");
-  this.load.image("pagedica03", "./assets/stage00/subpage-pagegame-dica03.png");
-  this.load.image("pagedica04", "./assets/stage00/subpage-pagegame-dica04.png");
-  this.load.image("pc", "./assets/stage00/object-pagegame-pc.png");
-  this.load.image("status01", "./assets/stage00/player1-pagegame-status.png");
-  this.load.image("status02", "./assets/stage00/player2-pagegame-status.png");
-  this.load.image("opcao01", "./assets/stage00/button-pc-opcao01.png");
-  this.load.image("opcao02", "./assets/stage00/button-pc-opcao02.png");
-  this.load.image("opcao03", "./assets/stage00/button-pc-opcao03.png");
+stage02.preload = function () {
+  this.load.image("divisao", "./assets/stage02/division.png");
+  this.load.image("dica", "./assets/stage02/object-pagegame-dicas.png");
+  this.load.image("entrada", "./assets/stage02/object-pagegame-entrada.png");
+  this.load.image("map", "./assets/stage02/fundo-pagegame-fundo01.png");
+  this.load.image("pagedica01", "./assets/stage02/subpage-pagegame-dica01.png");
+  this.load.image("pagedica02", "./assets/stage02/subpage-pagegame-dica02.png");
+  this.load.image("pagedica03", "./assets/stage02/subpage-pagegame-dica03.png");
+  this.load.image("pagedica04", "./assets/stage02/subpage-pagegame-dica04.png");
+  this.load.image("pc", "./assets/stage02/object-pagegame-pc.png");
+  this.load.image("status01", "./assets/stage02/player1-pagegame-status.png");
+  this.load.image("status02", "./assets/stage02/player2-pagegame-status.png");
+  this.load.image("opcao01", "./assets/stage02/button-pc-opcao01.png");
+  this.load.image("opcao02", "./assets/stage02/button-pc-opcao02.png");
+  this.load.image("opcao03", "./assets/stage02/button-pc-opcao03.png");
 
-  this.load.spritesheet("saida", "./assets/stage00/object-pagegame-saida.png", {
+  this.load.spritesheet("saida", "./assets/stage02/object-pagegame-saida.png", {
     frameWidth: 271.8523,
     frameHeight: 64.8913,
   });
 
-  this.load.spritesheet("player1", "./assets/stage00/player1.png", {
+  this.load.spritesheet("player1", "./assets/stage02/player1.png", {
     frameWidth: 120,
     frameHeight: 120,
   });
 
-  this.load.spritesheet("player2", "./assets/stage00/player2.png", {
+  this.load.spritesheet("player2", "./assets/stage02/player2.png", {
     frameWidth: 120,
     frameHeight: 120,
   });
 
-  this.load.spritesheet("closestage", "./assets/stage00/button-pagegame-close.png", {
+  this.load.spritesheet("closestage", "./assets/stage02/button-pagegame-close.png", {
     frameWidth: 242.1196,
     frameHeight: 80.7065,
   });
 };
 
-stage00.create = function () {
+stage02.create = function () {
   this.add.image(960, 540, "map");
   this.add.image(2880, 540, "map");
   player1 = this.physics.add.sprite(960, 945, "player1");
@@ -339,7 +339,7 @@ stage00.create = function () {
   });
 };
 
-stage00.update = function () {
+stage02.update = function () {
   if (jogador === 1) {
     if (cursors.left.isDown) {
       player1.body.setVelocityX(-500);
@@ -405,7 +405,7 @@ function hitpc(player2, pc) {
   opcao01.on(
     "pointerdown",
     function () {
-      this.scene.start(stage01);
+      this.scene.start(win);
     },
     this
   );
@@ -429,6 +429,7 @@ function hitpc(player2, pc) {
     },
     this
   );
+
 }
 
-export { stage00 };
+export { stage02 };

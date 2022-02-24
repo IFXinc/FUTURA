@@ -1,4 +1,4 @@
-import { stage02 } from "./stage02.js";
+/*import { stage02 } from "./stage02.js";
 import { gameover } from "./gameover.js";
 
 var stage01 = new Phaser.Scene("stage01");
@@ -339,7 +339,7 @@ stage01.create = function () {
       player1.x = x;
       player1.y = y;
     }
-    if (scene !== 1) {
+    if (scene = 0) {
       gameOver = true  
     }
   });
@@ -440,4 +440,4 @@ function hitpc(player2, pc) {
   );
 };
 
-export { stage01 };
+export { stage01 };*/

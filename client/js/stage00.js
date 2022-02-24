@@ -10,6 +10,7 @@ var dica02;
 var dica03;
 var dica04;
 var divisao;
+var gameOver;
 var ice_servers = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 var jogador;
 var life;
@@ -90,6 +91,8 @@ stage00.create = function () {
   this.add.image(213.75 + 1920, 93.6713, "status02");
   this.add.image(1770, 40.3533, "closestage");
   this.add.image(1770+1920, 40.3533, "closestage");
+
+  gameOver = false
 
   pc = this.physics.add.staticGroup();
   pc.create(2880, 540, "pc");
@@ -326,7 +329,7 @@ stage00.create = function () {
   });
 
   // Desenhar o outro jogador
-  this.socket.on("desenharOutroJogador", ({ frame, x, y }) => {
+  this.socket.on("desenharOutroJogador", ({ frame, x, y, scene }) => {
     if (jogador === 1) {
       player2.setFrame(frame);
       player2.x = x;
@@ -336,10 +339,15 @@ stage00.create = function () {
       player1.x = x;
       player1.y = y;
     }
+    if (scene !== 1) {
+      gameOver = true  
+    }
   });
 };
 
 stage00.update = function () {
+  if (gameOver) {this.scene.start(stage01)}
+
   if (jogador === 1) {
     if (cursors.left.isDown) {
       player1.body.setVelocityX(-500);
@@ -379,6 +387,7 @@ stage00.update = function () {
       frame: player2.anims.getFrameName(),
       x: player2.body.x + 8,
       y: player2.body.y + 8,
+      scene: 1 
     });
   }
 };
@@ -405,7 +414,7 @@ function hitpc(player2, pc) {
   opcao01.on(
     "pointerdown",
     function () {
-      this.scene.start(stage01);
+      gameOver = true
     },
     this
   );
@@ -415,7 +424,7 @@ function hitpc(player2, pc) {
   opcao02.on(
     "pointerdown",
     function () {
-      this.scene.start(gameover);
+      gameOver = true
     },
     this
   );
@@ -425,10 +434,10 @@ function hitpc(player2, pc) {
   opcao03.on(
     "pointerdown",
     function () {
-      this.scene.start(gameover);
+      gameOver = true
     },
     this
   );
-}
+};
 
 export { stage00 };

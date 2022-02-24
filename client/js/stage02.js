@@ -10,6 +10,7 @@ var dica02;
 var dica03;
 var dica04;
 var divisao;
+var gameOver;
 var ice_servers = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 var jogador;
 var life;
@@ -90,6 +91,8 @@ stage02.create = function () {
   this.add.image(213.75 + 1920, 93.6713, "status02");
   this.add.image(1770, 40.3533, "closestage");
   this.add.image(1770+1920, 40.3533, "closestage");
+
+  gameOver = false
 
   pc = this.physics.add.staticGroup();
   pc.create(2880, 540, "pc");
@@ -326,7 +329,7 @@ stage02.create = function () {
   });
 
   // Desenhar o outro jogador
-  this.socket.on("desenharOutroJogador", ({ frame, x, y }) => {
+  this.socket.on("desenharOutroJogador", ({ frame, x, y, scene }) => {
     if (jogador === 1) {
       player2.setFrame(frame);
       player2.x = x;
@@ -336,10 +339,15 @@ stage02.create = function () {
       player1.x = x;
       player1.y = y;
     }
+    if (scene !== 1) {
+      gameOver = true  
+    }
   });
 };
 
-stage02.update = function () {
+stage00.update = function () {
+  if (gameOver) {this.scene.start(stage01)}
+
   if (jogador === 1) {
     if (cursors.left.isDown) {
       player1.body.setVelocityX(-500);
@@ -385,19 +393,19 @@ stage02.update = function () {
 
 function hitdica1(player1, dicas) {
   pagedica01.enableBody(true, 1431, 753, true, true);
-}
+};
 
 function hitdica2(player1, dicas) {
   pagedica02.enableBody(true, 489, 753, true, true);
-}
+};
 
 function hitdica3(player1, dicas) {
   pagedica03.enableBody(true, 439, 375, true, true);
-}
+};
 
 function hitdica4(player1, dicas) {
   pagedica04.enableBody(true, 1481, 375, true, true);
-}
+};
 
 function hitpc(player2, pc) {
   opcao01 = this.add.image(524+1920, 320, "opcao01", 0).setInteractive();
@@ -405,7 +413,7 @@ function hitpc(player2, pc) {
   opcao01.on(
     "pointerdown",
     function () {
-      this.scene.start(win);
+      gameOver = true
     },
     this
   );
@@ -415,7 +423,7 @@ function hitpc(player2, pc) {
   opcao02.on(
     "pointerdown",
     function () {
-      this.scene.start(gameover);
+      gameOver = true
     },
     this
   );
@@ -425,11 +433,10 @@ function hitpc(player2, pc) {
   opcao03.on(
     "pointerdown",
     function () {
-      this.scene.start(gameover);
+      gameOver = true
     },
     this
   );
-
-}
+};
 
 export { stage02 };

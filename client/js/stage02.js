@@ -345,8 +345,9 @@ stage02.create = function () {
   });
 };
 
-stage00.update = function () {
-  if (gameOver) {this.scene.start(stage01)}
+stage02.update = function () {
+  if (gameOver) {this.scene.stop()}
+  if (gameOver) {this.scene.start(win)}
 
   if (jogador === 1) {
     if (cursors.left.isDown) {

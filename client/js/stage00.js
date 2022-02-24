@@ -1,4 +1,5 @@
 import { stage01 } from "./stage01.js";
+
 import { gameover } from "./gameover.js";
 
 var stage00 = new Phaser.Scene("stage00");
@@ -346,6 +347,7 @@ stage00.create = function () {
 };
 
 stage00.update = function () {
+  if (gameOver) {this.scene.stop()}
   if (gameOver) {this.scene.start(stage01)}
 
   if (jogador === 1) {
